@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
 // Hash password
 userSchema.pre("save", async function (next) {
   // if not new or recently modified continue to saving.
-  if (this.isModified("password")) return next();
+  if (!this.isModified("password")) return next();
 
   // if its new or recently modilfied.
   this.password = await bcrypt.hash(this.password, 10);
