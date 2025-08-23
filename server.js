@@ -1,52 +1,53 @@
-//import the packages we installed //
 const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./route/auth");
 const cors = require("cors");
 
-// Enable usage of .env files - this must always be at the topmost part of your server/app/index .js file
+//Enable the use of the dotenv files - this must always be on the topmost part of index/app/server .js file
 require("dotenv").config();
 
-// Create the express app
-
+//Create the express app
 const app = express();
 
-// set up middlewares (code that runs for every request)
+//Create the middlewares (code that runs for every requests)
+
 app.use(cors());
 app.use(express.json());
 
-// Our port
+//Our Port
 
 const PORT = process.env.PORT || 5000;
 
 //Create endpoint
+
 app.get("/", (req, res) => {
   res.status(200).json({
-    status: "ok",
-    maessage: "Hello! this is the home endpoint of our backend",
+    success: " Hello ! this is the home end point of our backend",
     data: {
-      name: "e-commerce-backend data",
-      class: "Feb 2025",
-      efficiency: "Beginner",
+      name: "e-commerce-backend datum",
+      class: "Feb 2025 class",
+      efficiency: "Intermediate",
     },
   });
 });
 
 //actual endpoints
 app.use("/api/auth", authRoutes);
-app.post("/api/auth/register", (req, res) => {
-  res.status(200).json({
-    message: "Success! The route is working.",
-  });
+
+// Add this logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  console.log("Request Body:", req.body);
+  next();
 });
 
-// Connect DB
+//Connect DB
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("DB connection successful ");
+    console.log("DB Connection successful");
   } catch (error) {
-    console.error("DB connection failed:", error.message);
+    console.error("DB Connection failed:", error.message);
   }
 };
 
@@ -54,5 +55,5 @@ connectDB();
 
 //Start server
 app.listen(PORT, () => {
-  console.log(`Serving running at ${PORT}`);
+  console.log(`Server running at ${PORT}`);
 });

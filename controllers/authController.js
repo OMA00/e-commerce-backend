@@ -57,7 +57,7 @@ const login = async (req, res) => {
     const {email, password} = req.body;
 
     //find user by email 
-    const user = User.findOne({email});
+    const user =  await User.findOne({ email});
     if(!user){
       return res.status(400).json({
         success: false, message:"Invalid email or Password"
@@ -65,7 +65,7 @@ const login = async (req, res) => {
     }
 
     // Check password 
-    const isPasswordValid = await user.comparepassword(password);
+    const isPasswordValid = await user.comparePassword(password);
     if(!isPasswordValid){
       return res.status(401).json({
         success: false, message:"Invalid email or password"

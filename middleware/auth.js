@@ -17,7 +17,7 @@ const auth = async(req, res , next) => {
 
         // Get user from database
         const user = await User.findById(decoded.userId).select("-password");
-        if(!user)) {
+        if(!user) {
             return res.status(401).json({
                 success:false, message: "Token is valid but user not found"
             });
