@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./route/auth");
+const productRoutes = require("./route/product");
 const cors = require("cors");
 
 //Enable the use of the dotenv files - this must always be on the topmost part of index/app/server .js file
@@ -33,18 +34,13 @@ app.get("/", (req, res) => {
 
 //actual endpoints
 app.use("/api/auth", authRoutes);
-
-// Add this logging middleware
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  console.log("Request Body:", req.body);
-  next();
-});
+app.use("/api/products", productRoutes);
 
 //Connect DB
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
+
     console.log("DB Connection successful");
   } catch (error) {
     console.error("DB Connection failed:", error.message);
